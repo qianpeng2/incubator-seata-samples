@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class StockController {
@@ -34,8 +35,9 @@ public class StockController {
     private StorageService storageService;
 
     @RequestMapping(value = "/deduct", method = RequestMethod.GET, produces = "application/json")
-    public String deduct(String commodityCode, int count) {
+    public String deduct(String commodityCode, int count, HttpServletRequest request) {
         try {
+            System.out.println("XID: " + request.getHeader("TX_XID"));//测试上游服务是否通过 feign 传递过来了 XID
             storageService.deduct(commodityCode, count);
         } catch (Exception ex) {
             LOGGER.error("deduct err,", ex);
