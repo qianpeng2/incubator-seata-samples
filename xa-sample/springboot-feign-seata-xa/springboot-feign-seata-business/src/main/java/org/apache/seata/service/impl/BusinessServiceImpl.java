@@ -50,6 +50,8 @@ public class BusinessServiceImpl implements BusinessService {
         stockFeignClient.deduct(commodityCode, orderCount);
         orderFeignClient.create(userId, commodityCode, orderCount);
         if (forceRollback) {
+            // 当传入 forceRollback=true的时候,异常有抛出,但是因为下游服务 storage 和 order 服务打印出来的 xid 都为null
+            //  Feign 默认不会传递 Seata 的事务上下文信息（即 xid 这个 header）。这会导致下游服务无法加入全局事务，最终事务不会回滚。
             throw new RuntimeException("force rollback!");
         }
     }
@@ -73,6 +75,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @PostConstruct
     public void initData() {
+        // 初始化数据 insert 账户余额、库存余额
         jdbcTemplate.update("delete from account_tbl");
         jdbcTemplate.update("delete from order_tbl");
         jdbcTemplate.update("delete from stock_tbl");
