@@ -24,7 +24,7 @@ public class SpringbootSeataApplication implements BeanFactoryAware {
 		Thread thread = new Thread(() -> {
 			String res =  "{\"res\": \"success\"}";
 			try {
-				businessService.purchase("U100001", "C00321", 2);
+				businessService.purchase("U100000", "C00321", 2);// userId=U100001 导致和其他 XA mode 中的userId不一致导致没有得到更新
 				if (E2EUtil.isInE2ETest()) {
 					E2EUtil.writeE2EResFile(res);
 				}
