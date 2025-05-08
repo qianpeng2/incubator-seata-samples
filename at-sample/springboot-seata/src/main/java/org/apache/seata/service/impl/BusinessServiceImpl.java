@@ -52,6 +52,7 @@ public class BusinessServiceImpl implements BusinessService {
         storageService.deduct(commodityCode, orderCount);
         orderService.create(userId, commodityCode, orderCount);
         Boolean status = random.nextBoolean();
+        status = false;
         LOGGER.info("purchase random result is {} ", status);
         if (status) {
             throw new RuntimeException("random exception mock!");

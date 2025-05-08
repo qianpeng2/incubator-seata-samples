@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("Deducting balance SQL: update account_tbl set money = money - {} where user_id = {}", money,
                 userId);
 
-        jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ?", money, userId);
-        LOGGER.info("Account Service End ... ");
+        int row = jdbcTemplate.update("update account_tbl set money = money - ? where user_id = ?", money, userId);// row=0
+        LOGGER.info("Account Service End ...,row={} ", row);
     }
 }
